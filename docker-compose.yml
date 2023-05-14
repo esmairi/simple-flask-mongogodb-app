@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    env_file:
+      - ./.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    volumes:
+      - mongo:/data/db
+    ports:
+      - '27017:27017'
+
+  mongoclient:
+    image: mongoclient/mongoclient:latest
+    container_name: mongoclient
+    hostname: mongoclient
+    depends_on:
+      - mongo
+    ports:
+      - 3300:3000
+
+volumes:
+  mongo:
